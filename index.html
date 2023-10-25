@@ -1,1 +1,257 @@
-Hello World
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
+<title>Matt Duckett</title>
+<script src="text_distort_test/blotter.min.js"></script>
+<script src="text_distort_test/three.min.js"></script>
+<script src="text_distort_test/liquidDistortMaterial.js"></script>
+</head>
+<body>
+	
+	    <div class="MD" id="MD" onClick="smoothScroll(document.getElementById('MD'))">
+      <h2></h2>
+	</div>
+	<div class="main">
+	<video class="video" src="BG.mp4" muted loop autoplay></video>
+    <div class="overlay"></div>
+	<div class="overlaydarken"></div>
+	<div class="menu" id="menu" onClick=""><svg class="menuclosed" xmlns="http://www.w3.org/2000/svg" height="4vh" fill="currentColor" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+</svg>
+	<svg class="menuopen" xmlns="http://www.w3.org/2000/svg" height="5vh" fill="currentColor" viewBox="0 0 16 16">
+  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+</svg>
+</div>
+	<div class="splash">
+	<!--<img src="imgs/343274867_188851000228940_218520464388158234_n.jpg">-->
+	</div>
+	<div class="box" id="box">
+		<div class="gallery" id="gallery">
+  <figure class="gallery__item gallery__item--1">
+    <img src="imgs/Matt_Duckett_1.jpg" class="gallery__img" alt="Image 1">
+  </figure>
+  <figure class="gallery__item gallery__item--2">
+    <img src="imgs/Matt_Duckett_2.jpg" class="gallery__img" alt="Image 2">
+  </figure>
+  <!--<figure class="gallery__item gallery__item--3">
+    <p>This is a test I hope it works oh please god let this work I want this to work so badly</p>
+  </figure>-->
+  <figure class="gallery__item gallery__item--4">
+    <img src="imgs/Matt_Duckett_3.jpg" class="gallery__img" alt="Image 4">
+  </figure>
+  <!--<figure class="gallery__item gallery__item--5">
+    <img src="imgs/340489334_1180433312668389_2956230672567325989_n.jpg" class="gallery__img" alt="Image 5">
+  </figure>
+  <figure class="gallery__item gallery__item--6">
+    <img src="imgs/340491659_625125885619584_4489425184036241609_n.jpg" class="gallery__img" alt="Image 6">
+  </figure>-->
+  <figure class="gallery__item gallery__item--7">
+	  <video src="bw_beauty_1_960.mp4" alt="Image 7" muted class="video-scroll"></video>
+  </figure>	
+		</div>
+	</div>
+	</div>
+		<div class="footer" id="footer">
+	</div>
+	  <div class="menulist">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">News</a></li>
+      <li><a href="#">Destination</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+    <script>
+        // Add this variable to track whether the page has been scrolled
+        var hasScrolled = false;
+
+        window.smoothScroll = function(target) {
+            var scrollContainer = target;
+            do {
+                scrollContainer = scrollContainer.parentNode;
+                if (!scrollContainer) return;
+                scrollContainer.scrollTop += 1;
+            } while (scrollContainer.scrollTop == 0);
+
+            var targetY = 0;
+            do {
+                if (target == scrollContainer) break;
+                targetY += target.offsetTop;
+            } while (target = target.offsetParent);
+
+            var easeInOutQuad = function(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
+            };
+
+            scroll = function(c, a, b, i) {
+                i++; if (i > 30) return;
+                var newY = easeInOutQuad(i, a, b - a, 30);
+                c.scrollTop = newY;
+                setTimeout(function() { scroll(c, a, b, i); }, 20);
+            };
+
+            if (!hasScrolled) {
+                scroll(scrollContainer, scrollContainer.scrollTop, targetY, 0);
+                hasScrolled = true; // Mark the page as scrolled
+            }
+        };
+    </script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+	<script>
+//--- Credit to @shshaw for orginal video scroll code - https://codepen.io/shshaw/pen/vYKBPbv/9e810322d70c306de2d18237d0cb2d78
+
+console.clear();
+/* The encoding is super important here to enable frame-by-frame scrubbing. */
+
+// ffmpeg -i ~/Downloads/Toshiba\ video/original.mov -movflags faststart -vcodec libx264 -crf 23 -g 1 -pix_fmt yuv420p output.mp4
+// ffmpeg -i ~/Downloads/Toshiba\ video/original.mov -vf scale=960:-1 -movflags faststart -vcodec libx264 -crf 20 -g 1 -pix_fmt yuv420p output_960.mp4
+
+
+gsap.registerPlugin(ScrollTrigger)
+
+let videoScroll = document.querySelector(".video-scroll"),
+    frameNumber = 0,
+    src = videoScroll.currentSrc || videoScroll.src
+
+
+videoScrollTL = gsap.timeline({
+  defaults: { duration: 1 },
+  scrollTrigger: {
+    trigger: ".video-scroll",
+    pin: false,
+    start: "top 90%",
+    end: "bottom 20%",
+    scrub: true,
+    markers: false,
+    onUpdate: self => {
+      frameNumber = self.progress / 14 * 100 - 1; //this takes fine tuning divide your videos FPS by two. My video's FPS was 30, 14 was the sweet spot. -1 fixes an issue on safari where the video disappears at the end of the scrollTrigger
+      videoScroll.currentTime = frameNumber;
+    }
+  }
+});       
+
+/* Make sure the video is 'activated' on iOS */
+function once(el, event, fn, opts) {
+  var onceFn = function (e) {
+    el.removeEventListener(event, onceFn);
+    fn.apply(this, arguments);
+  };
+  el.addEventListener(event, onceFn, opts);
+  return onceFn;
+}         
+
+once(document.documentElement, "touchstart", function (e) {
+  videoScroll.play();
+  videoScroll.pause();
+});
+
+//make sure video has loaded
+once(videoScroll, "loadedmetadata", function () {
+  videoScrollTL.fromTo(videoScroll, { currentTime: 0 }, { currentTime: videoScroll.duration - 0.10 });
+});
+
+//When first coded, the Blobbing was important to ensure the browser wasn't dropping previously played segments, but it doesn't seem to be a problem now. Possibly based on memory availability?
+setTimeout(function () {
+  if (window["fetch"]) {
+    fetch(src).then(function (response) {
+      return response.blob();
+    }).then(function (response) {
+      var blobURL = URL.createObjectURL(response);
+      var t = videoScroll.currentTime;
+      once(document.documentElement, "touchstart", function (e) {
+        videoScroll.setAttribute("src", blobURL);
+        videoScroll.currentTime = t + 0.01;
+      });
+    });
+  }
+}, 0);
+	
+	</script>
+<script>
+	const menuToggle = document.querySelector('.menuclosed');
+	const menuMain = document.querySelector('.main');
+	const menuOpen = document.querySelector('.menuopen');
+	const menuList = document.querySelector('.menulist');
+
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        menuMain.classList.toggle('active');
+		  menuOpen.classList.toggle('active');
+		  menuList.classList.toggle('active');
+      })
+</script>	
+<script>
+window.addEventListener("DOMContentLoaded", function() {
+  var header = document.getElementById("MD");
+  var footer = document.getElementById("footer")
+  var menu = document.getElementById("menu")
+  var headerOffset = header.offsetTop;
+  var headerHeight = header.offsetHeight;
+  var windowHeight = window.innerHeight;
+
+  window.addEventListener("scroll", function() {
+    var scrollPosition = window.pageYOffset;
+    var opacity = Math.min((scrollPosition - headerOffset) / (0.1 * windowHeight), 1);
+
+    if (scrollPosition > headerOffset) {
+      header.style.position = "fixed";
+      header.style.top = "0";
+      header.style.backgroundColor = "rgba(236,241,231, 0)";
+	  header.style.cursor = "default";
+	  footer.style.backgroundColor = "rgba(236,241,231, " + opacity + ")";
+	  menu.style.color = "rgba(228, 52, 55, " + opacity + ")";
+	  menu.style.cursor = "pointer";
+    } else {
+      header.style.position = "absolute";
+      header.style.top = "40%";
+      header.style.backgroundColor = "rgba(236,241,231, 0)";
+	  header.style.cursor ="pointer";
+	  footer.style.backgroundColor = "rgba(236,241,231, 0)";
+	  menu.style.color = "rgba(228, 52, 55, 0)";
+	  menu.style.cursor = "default";
+    }
+  });
+});
+</script>
+<script>
+var text = new Blotter.Text("Matt Duckett", {
+  family: "Barlowfold",
+  size: "80",
+  fill: "rgba(228,52,55,0.95)",
+  paddingLeft: 10,
+  paddingRight: 10
+});
+
+var material = new Blotter.LiquidDistortMaterial();
+
+// Play with the value for uSpeed. Lower values slow
+// down animation, while higher values speed it up. At
+// a speed of 0.0, animation is stopped entirely.
+material.uniforms.uSpeed.value = 0.1	;
+
+// Try uncommenting the following line to play with
+// the "volatility" of the effect. Higher values here will
+// produce more dramatic changes in the appearance of your
+// text as it animates, but you will likely want to keep
+// the value below 1.0.
+material.uniforms.uVolatility.value = 0.08;
+
+var blotter = new Blotter(material, {
+  texts: text
+});
+
+var elem = document.querySelector(".MD h2");
+var scope = blotter.forText(text);
+
+scope.appendTo(elem);
+</script>
+</body>
+</html>
